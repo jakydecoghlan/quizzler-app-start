@@ -5,13 +5,15 @@ THEME_COLOR = "#375362"
 
 class QuizInterface:
 
-    def __init__(self):
+    def __init__(self, quiz_brain: QuizBrain):
+        self.quiz = quiz_brain
+
         self.window = Tk()
         self.window.title("Quizzler")
         self.window.config(padx=20, pady=20, bg=THEME_COLOR)
 
         self.canvas = Canvas(width=300, height=250)
-        self.question_text = self.canvas.create_text(150, 125,
+        self.question_text = self.canvas.create_text(150, 125, width=280,
                                                      text="{QuizBrain.q_text}",
                                                      fill=THEME_COLOR,
                                                      font="arial 20 italic")
@@ -35,4 +37,11 @@ class QuizInterface:
         self.false_button = Button(text="Button", image=false_image, bg=THEME_COLOR, highlightthickness=0)
         self.false_button.grid(column=1, row=2, padx=20, pady=20)
 
+        self.get_next_question()
+
         self.window.mainloop()
+
+
+        def get_next_question():
+            q_text = self.quiz.next_question()
+            self.canvas.itemconfig(self.question_text, text=q_text)
